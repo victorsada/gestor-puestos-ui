@@ -1,17 +1,52 @@
-import React, { Fragment, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { Fragment, useState, useEffect } from "react";
+import { Link, Redirect } from "react-router-dom";
 
-const Login = ({ setUserMain }) => {
-  const [user, setUser] = useState({
+const Login = ({ user, setUser }) => {
+  useEffect(() => {
+    if (user === undefined) {
+      return;
+    }
+
+    const api = async () => {
+      const url = "http://localhost:4000/api/user/login";
+      const createdUser = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      });
+      if (createdUser.status === 404) {
+        alert(`The email ${email} is not exist.`);
+        setData({
+          email: "",
+          password: "",
+        });
+        return;
+      } else if (createdUser.status === 409) {
+        alert(`Password incorrect.`);
+        setData({
+          email: "",
+          password: "",
+        });
+        return;
+      }
+      setRedirect(true);
+    };
+    api();
+    // eslint-disable-next-line
+  }, [user]);
+
+  const [data, setData] = useState({
     email: "",
     password: "",
   });
-  const { email, password } = user;
-
+  const { email, password } = data;
+  const [redirect, setRedirect] = useState(false);
   const [error, setError] = useState(false);
   const handleChange = (e) => {
-    setUser({
-      ...user,
+    setData({
+      ...data,
       [e.target.name]: e.target.value,
     });
   };
@@ -23,7 +58,7 @@ const Login = ({ setUserMain }) => {
       return;
     }
     setError(false);
-    setUserMain(user);
+    setUser(data);
   };
 
   return (
@@ -37,12 +72,14 @@ const Login = ({ setUserMain }) => {
                 type="email"
                 className="form-control "
                 name="email"
+                value={email}
                 placeholder="Introduce your Email"
                 onChange={handleChange}
               />
               <input
                 type="password"
                 name="password"
+                value={password}
                 placeholder="Introduce your password"
                 className="form-control mt-2"
                 onChange={handleChange}
@@ -59,9 +96,13 @@ const Login = ({ setUserMain }) => {
                 Sign in
               </button>
             </div>
-            <Link to="/create-user" className="">
+            <Link
+              to="/create-user"
+              className=" btn btn-block btn-info text-light w-75"
+            >
               Sign up
             </Link>
+            {redirect ? <Redirect to="/assistants" /> : null}
           </form>
         </div>
       </div>
