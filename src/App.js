@@ -7,18 +7,19 @@ import Assistants from "./components/assistants/assistants";
 
 function App() {
   const [user, setUser] = useState();
+  const [auth, setAuth] = useState();
   return (
     <div className="App">
       <Router>
         <Switch>
           <Route exact path="/">
-            <Login user={user} setUser={setUser} />
+            <Login user={user} setUser={setUser} setAuth={setAuth} />
           </Route>
           <Route exact path="/create-user">
             <CreateUser user={user} setUser={setUser} />
           </Route>
           <Route exact path="/assistants">
-            <Assistants />
+            <Assistants auth={auth} />
           </Route>
         </Switch>
       </Router>

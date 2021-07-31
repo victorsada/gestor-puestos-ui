@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { Link, Redirect } from "react-router-dom";
 
-const Login = ({ user, setUser }) => {
+const Login = ({ user, setUser, setAuth }) => {
   useEffect(() => {
     if (user === undefined) {
       return;
@@ -9,34 +9,43 @@ const Login = ({ user, setUser }) => {
 
     const api = async () => {
       const url = "http://localhost:4000/api/user/login";
-      const createdUser = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user),
-      });
-      if (createdUser.status === 404) {
-        alert(`The email ${email} is not exist.`);
-        setData({
-          email: "",
-          password: "",
+
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(user),
         });
-        return;
-      } else if (createdUser.status === 409) {
-        alert(`Password incorrect.`);
-        setData({
-          email: "",
-          password: "",
-        });
-        return;
+        const createdUser = await response.json();
+
+        if (response.status === 404) {
+          alert(createdUser.message);
+          setData({
+            email: "",
+            password: "",
+          });
+          return;
+        } else if (response.status === 409) {
+          alert(createdUser.message);
+          setData({
+            email: "",
+            password: "",
+          });
+          return;
+        }
+        setRedirect(true);
+        localStorage.setItem("token", createdUser.token);
+        const token = localStorage.getItem("token");
+        setAuth(token);
+      } catch (error) {
+        console.log(error);
       }
-      setRedirect(true);
     };
     api();
     // eslint-disable-next-line
   }, [user]);
-
   const [data, setData] = useState({
     email: "",
     password: "",
