@@ -1,11 +1,9 @@
 import React, { Fragment, useEffect, useState } from "react";
+import Assistant from "./assistant";
 
 const Assistants = ({ auth }) => {
   const token = localStorage.getItem("token");
-  const [assistant, setAssistant] = useState({
-    totalAssistant: 0,
-    assistant: [],
-  });
+  const [assistant, setAssistant] = useState([]);
 
   useEffect(() => {
     const getAssistants = async () => {
@@ -17,21 +15,41 @@ const Assistants = ({ auth }) => {
         },
       });
       const participant = await response.json();
-      // console.log(participant);
       setAssistant(participant);
     };
     getAssistants();
   }, [token]);
-  console.log(assistant);
   return (
     <Fragment>
       {token || auth ? (
-        <div className="row">
-          <h1>From assistants</h1>
-          {JSON.stringify(assistant.assistant)}
+        <div className="mt-3">
+          <h1>Lista de Participantes</h1>
+
+          <table className="mt-3 table table-striped">
+            <thead className="bg-primary table-dark ">
+              <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Teléfono</th>
+                <th scope="col">Miembro</th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {assistant.length === 0 ? (
+                <div className="mt-5 ">
+                  <h1>Ooops, no hay participantes :'C </h1>
+                  <h2>Ve a crear uno ^.^</h2>
+                </div>
+              ) : (
+                assistant.map((participant) => (
+                  <Assistant key={participant._id} participant={participant} />
+                ))
+              )}
+            </tbody>
+          </table>
         </div>
       ) : (
-        <h1>Non Authorization</h1>
+        <h1>No estas autorizado, ¡ve y logueate! :D</h1>
       )}
     </Fragment>
   );
