@@ -36,3 +36,12 @@
     transform: rotate(360deg);
   }
 }
+
+.derecha {
+  display: grid;
+  grid-gap: 5px;
+  grid-auto-flow: column;
+  width: 100%;
+  grid-template-columns: 50px 50px;
+  justify-content: end;
+}
