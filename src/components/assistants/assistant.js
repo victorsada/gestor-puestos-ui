@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from "react";
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 
-const Assistant = ({ participant }) => {
+const Assistant = ({ participant, setRefresh }) => {
   const token = localStorage.getItem("token");
   const [modal, setModal] = useState(false);
   const { adress, name, sex, telf, email, birthday, member, _id } = participant;
@@ -16,18 +16,26 @@ const Assistant = ({ participant }) => {
       },
     });
   };
-  const handleDelete = (e) => {};
+  const handleDelete = async (id) => {
+    await fetch(`http://localhost:4000/api/assistant/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: token,
+      },
+    });
+    setRefresh(true);
+  };
 
   return (
     <Fragment>
       <tr>
-        <td>{name}</td>
+        <td className="text-capitalize">
+          <b> {name} </b>
+        </td>
         <td>
           <span className="font-weight-bold"> {telf}</span>
         </td>
-        <td>
-          <span> {member} </span>
-        </td>
+        <td>{member ? <span> Si </span> : <p>No</p>}</td>
         <td className="acciones">
           <button
             type="submit"

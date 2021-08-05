@@ -4,7 +4,7 @@ import Assistant from "./assistant";
 
 const Assistants = ({ auth }) => {
   const token = localStorage.getItem("token");
-  const [control, setControl] = useState(false);
+  const [refresh, setRefresh] = useState(false);
   const [assistant, setAssistant] = useState([]);
   const [modal, setModal] = useState(false);
   const [member, setMember] = useState(false);
@@ -19,25 +19,6 @@ const Assistants = ({ auth }) => {
   });
   const { name, email, birthday, adress, telf } = asistente;
   asistente.member = member;
-  console.log("CONTROL: ", control);
-  useEffect(() => {
-    console.log("EMPEZANDO EL useEffect", control);
-    if (control === false) {
-      return;
-    }
-    const createAssistant = async () => {
-      await fetch("http://localhost:400/api/assistant", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token,
-        },
-        body: JSON.stringify(asistente),
-      });
-    };
-    createAssistant();
-    console.log("TERMINANDO EL useEffect");
-  }, [control]);
 
   useEffect(() => {
     const getAssistants = async () => {
@@ -51,17 +32,23 @@ const Assistants = ({ auth }) => {
       const participant = await response.json();
       setAssistant(participant);
     };
-    setControl(false);
-    console.log("TERMINO EL USE EFFECT CON EL CONTROL EN ", control);
     getAssistants();
-  }, [token]);
+    setRefresh(false);
+  }, [token, refresh]);
 
   const handleSubmit = async () => {
     if (name.trim() === "") {
       setError(true);
       return;
     }
-
+    await fetch("http://localhost:4000/api/assistant", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+      body: JSON.stringify(asistente),
+    });
     setAsistente({
       name: "",
       email: "",
@@ -70,9 +57,8 @@ const Assistants = ({ auth }) => {
       telf: "",
       sex: "",
     });
-    setControl(true);
-    console.log("paso por el control");
     setError(false);
+    setRefresh(true);
     setModal(false);
   };
 
@@ -108,7 +94,11 @@ const Assistants = ({ auth }) => {
                 </div>
               ) : (
                 assistant.map((participant) => (
-                  <Assistant key={participant._id} participant={participant} />
+                  <Assistant
+                    key={participant._id}
+                    participant={participant}
+                    setRefresh={setRefresh}
+                  />
                 ))
               )}
             </tbody>
