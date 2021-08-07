@@ -126,7 +126,7 @@ const Assistants = ({ auth }) => {
               type="text"
               className="form-control"
               name="name"
-              placeholder="Nombre del Asistente..."
+              placeholder="Nombre y Apellido del Asistente..."
               value={name}
               onChange={handleChange}
             />
@@ -147,7 +147,7 @@ const Assistants = ({ auth }) => {
               type="text"
               className="form-control mt-2"
               name="adress"
-              placeholder="Direccion Asistente..."
+              placeholder="Direccion del Asistente..."
               value={adress}
               onChange={handleChange}
             />
@@ -155,7 +155,7 @@ const Assistants = ({ auth }) => {
               type="date"
               className="form-control mt-2"
               name="birthday"
-              placeholder="Fecha de nacimiento Asistente..."
+              placeholder="Fecha de nacimiento del Asistente..."
               value={birthday}
               onChange={handleChange}
             />
@@ -163,7 +163,7 @@ const Assistants = ({ auth }) => {
               type="text"
               className="form-control mt-2"
               name="telf"
-              placeholder="Telefono Asistente..."
+              placeholder="Telefono del Asistente..."
               value={telf}
               onChange={handleChange}
             />

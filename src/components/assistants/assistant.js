@@ -1,9 +1,11 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 
 const Assistant = ({ participant, setRefresh }) => {
   const token = localStorage.getItem("token");
   const [modal, setModal] = useState(false);
+  const [confirm, setConfirm] = useState(false);
+  const [del, setDel] = useState(false);
   const { adress, name, sex, telf, email, birthday, member, _id } = participant;
   const handleEdit = (e) => {};
 
@@ -16,7 +18,7 @@ const Assistant = ({ participant, setRefresh }) => {
       },
     });
   };
-  const handleDelete = async (id) => {
+  const deleteAssistant = async (id) => {
     await fetch(`http://localhost:4000/api/assistant/${id}`, {
       method: "DELETE",
       headers: {
@@ -24,6 +26,9 @@ const Assistant = ({ participant, setRefresh }) => {
       },
     });
     setRefresh(true);
+  };
+  const handleDelete = async (id) => {
+    setDel(true);
   };
 
   return (
@@ -47,7 +52,7 @@ const Assistant = ({ participant, setRefresh }) => {
           <button
             type="button"
             className="btn btn-danger font-weight-bold "
-            onClick={() => handleDelete(_id)}
+            onClick={() => handleDelete()}
           >
             Eliminar
           </button>
@@ -103,6 +108,32 @@ const Assistant = ({ participant, setRefresh }) => {
             type="button"
           >
             OK
+          </button>
+        </ModalFooter>
+      </Modal>
+      <Modal isOpen={del}>
+        <ModalHeader>Confirmacion</ModalHeader>
+        <ModalBody>
+          <p>
+            ¿Estas seguro que deseas eliminar a{" "}
+            <b className="text-capitalize">{name}</b>?{" "}
+          </p>
+        </ModalBody>
+        <ModalFooter>
+          <button
+            onClick={() => {
+              deleteAssistant(_id);
+              setDel(false);
+            }}
+            className="btn btn-danger btn-block"
+          >
+            Si
+          </button>
+          <button
+            onClick={() => setDel(false)}
+            className="btn btn-primary btn-block"
+          >
+            No
           </button>
         </ModalFooter>
       </Modal>
