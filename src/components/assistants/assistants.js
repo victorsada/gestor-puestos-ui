@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
+import Logout from "../user/logout";
 import Assistant from "./assistant";
 
 const Assistants = ({ auth }) => {
@@ -75,7 +76,15 @@ const Assistants = ({ auth }) => {
     <Fragment>
       {token || auth ? (
         <div className="mt-3">
-          <h1>Lista de Participantes</h1>
+          <div className="row">
+            <div className="col-md-11">
+              <h1>Lista de Participantes</h1>
+            </div>
+            <div className=" col-md-1">
+              <Logout />
+            </div>
+          </div>
+          <div className="col-md-1"></div>
 
           <table className="mt-3 table table-striped">
             <thead className="bg-primary table-dark ">
