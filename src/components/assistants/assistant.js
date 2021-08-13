@@ -1,13 +1,16 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useState, useContext } from "react";
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
+import { Redirect } from "react-router-dom";
+import assistantContext from "../../context/assistant/assistantContext";
 
 const Assistant = ({ participant, setRefresh }) => {
+  const asistenteContext = useContext(assistantContext);
+  const { setAsistente } = asistenteContext;
   const token = localStorage.getItem("token");
   const [modal, setModal] = useState(false);
-  const [confirm, setConfirm] = useState(false);
   const [del, setDel] = useState(false);
   const { adress, name, sex, telf, email, birthday, member, _id } = participant;
-  const handleEdit = (e) => {};
+  const [edit, setEdit] = useState(false);
 
   const handleMore = async (id) => {
     setModal(true);
@@ -18,6 +21,7 @@ const Assistant = ({ participant, setRefresh }) => {
       },
     });
   };
+
   const deleteAssistant = async (id) => {
     await fetch(`http://localhost:4000/api/assistant/${id}`, {
       method: "DELETE",
@@ -27,8 +31,14 @@ const Assistant = ({ participant, setRefresh }) => {
     });
     setRefresh(true);
   };
+
   const handleDelete = async (id) => {
     setDel(true);
+  };
+
+  const handleEdit = () => {
+    setEdit(true);
+    setAsistente(participant);
   };
 
   return (
@@ -42,11 +52,7 @@ const Assistant = ({ participant, setRefresh }) => {
         </td>
         <td>{member ? <span> Si </span> : <p>No</p>}</td>
         <td className="acciones">
-          <button
-            type="submit"
-            onClick={handleEdit}
-            className="btn btn-secondary m-1 font-weight-bold"
-          >
+          <button onClick={handleEdit} className="btn btn-secondary m-1">
             Editar
           </button>
           <button
@@ -137,6 +143,9 @@ const Assistant = ({ participant, setRefresh }) => {
           </button>
         </ModalFooter>
       </Modal>
+      {edit ? (
+        <Redirect to={{ pathname: "/editAssistant", state: participant }} />
+      ) : null}
     </Fragment>
   );
 };
