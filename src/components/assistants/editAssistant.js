@@ -5,64 +5,96 @@ import assistantContext from "../../context/assistant/assistantContext";
 const EditAssistant = () => {
   const asistenteContext = useContext(assistantContext);
   const { asistente } = asistenteContext;
-  const { adress, email, telf } = asistente;
+  const { adress, email, telf, member } = asistente;
   const [redirect, setRedirect] = useState(false);
-  const [editAssistant, setEditAssistant] = useState({
-    direccion: "",
-    telefono: "",
-    correo: "",
-  });
-  const { direccion, telefono, correo } = editAssistant;
-
+  const [direccion, setDireccion] = useState("");
+  const [telefono, setTelefono] = useState("");
+  const [correo, setCorreo] = useState("");
+  const [miembro, setMiembro] = useState();
   const cancel = () => {
     setRedirect(true);
   };
 
-  const handleChange = (e) => {
-    setEditAssistant({
-      ...editAssistant,
-      [e.target.name]: e.target.value,
-    });
+  let edited = {
+    adress: direccion,
+    telf: telefono,
+    email: correo,
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    let datas = {};
+    if (edited.adress) {
+      datas.adress = edited.adress;
+    }
+    if (edited.telf) {
+      datas.telf = edited.telf;
+    }
+    if (edited.email) {
+      datas.email = edited.email;
+    }
+    const data = await fetch(
+      `http://localhost:4000/api/assistant/${asistente._id}`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: localStorage.getItem("token"),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datas),
+      }
+    );
+    const response = await data.json();
+    setRedirect(true);
+  };
+  const memberChange = (e) => {
+    setMiembro(!member);
+  };
+  console.log(miembro);
   return (
     <Fragment>
       <div className="container">
         <div className="mt-5 card p-5">
           <h4 className="mt-5">Editar Informacion del Asistente</h4>
-          <form>
+          <form onSubmit={handleSubmit}>
             <input
               type="text"
               className="form-control w-100 mt-2"
               name={direccion}
-              placeholder={adress}
-              onChange={(e) => e.target.value}
+              placeholder={`Direccion: ${adress}`}
+              onChange={(e) => setDireccion(e.target.value)}
             />
             <input
               type="text"
               className="form-control w-100 mt-2"
               name={telefono}
-              placeholder={telf}
-              onChange={handleChange}
+              onChange={(e) => setTelefono(e.target.value)}
+              placeholder={`Telefono: ${telf}`}
             />
             <input
               type="email"
               className="form-control w-100 mt-2"
               name={correo}
-              placeholder={email}
-              onChange={handleChange}
+              onChange={(e) => setCorreo(e.target.value)}
+              placeholder={`Correo Electronico: ${email}`}
             />
-            <input
+            {/* <input
               type="checkbox"
               className=" mt-2 mt-2"
-              name="miembro"
-
-              //onChange={memberChange}
+              name={miembro}
+              checked={member}
+              onChange={memberChange}
             />{" "}
-            Miembro de la Iglesia
+            Miembro de la Iglesia */}
             <br /> <br /> <br />
-            <button className="btn btn-success btn-block m-3">Editar</button>
-            <button onClick={cancel} className="btn btn-secondary btn-block">
+            <button type="submit" className="btn btn-success btn-block m-3">
+              Editar
+            </button>
+            <button
+              type="button"
+              onClick={cancel}
+              className="btn btn-secondary btn-block"
+            >
               Cancelar
             </button>
             {redirect ? <Redirect to="/assistants" /> : null}
