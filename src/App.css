@@ -45,3 +45,20 @@
   grid-template-columns: 50px 50px;
   justify-content: end;
 }
+
+.margen-left {
+  margin-left: 100px;
+  font-weight: bold;
+}
+.bg-nav {
+  background-color: #1f2f3e;
+}
+
+.margen-right {
+  font-weight: bold;
+  margin-right: 800px;
+}
+
+.size-img {
+  width: 550px;
+}

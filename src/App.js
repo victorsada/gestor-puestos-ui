@@ -6,6 +6,7 @@ import { useState } from "react";
 import Assistants from "./components/assistants/assistants";
 import EditAssistant from "./components/assistants/editAssistant";
 import AssistantState from "./context/assistant/assistantState";
+import Home from "./components/home";
 
 function App() {
   const [user, setUser] = useState();
@@ -26,6 +27,9 @@ function App() {
             </Route>
             <Route exact path="/editassistant">
               <EditAssistant />
+            </Route>
+            <Route exact path="/home">
+              <Home />
             </Route>
           </Switch>
         </Router>

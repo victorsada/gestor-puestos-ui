@@ -52,12 +52,15 @@ const Assistant = ({ participant, setRefresh }) => {
         </td>
         <td>{member ? <span> Si </span> : <p>No</p>}</td>
         <td className="acciones">
-          <button onClick={handleEdit} className="btn btn-secondary m-1">
+          <button
+            onClick={handleEdit}
+            className="btn btn-outline-secondary m-1"
+          >
             Editar
           </button>
           <button
             type="button"
-            className="btn btn-danger font-weight-bold "
+            className="btn btn-outline-danger font-weight-bold "
             onClick={() => handleDelete()}
           >
             Eliminar
@@ -65,7 +68,7 @@ const Assistant = ({ participant, setRefresh }) => {
 
           <button
             type="button"
-            className="font-weight-bold btn btn-info text-light m-1"
+            className="font-weight-bold btn btn-outline-info  m-1"
             onClick={() => handleMore(_id)}
           >
             Ver más
