@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
-import Logout from "../user/logout";
+import Nav from "../nav";
 import Assistant from "./assistant";
 
 const Assistants = ({ auth }) => {
@@ -74,14 +74,12 @@ const Assistants = ({ auth }) => {
   };
   return (
     <Fragment>
+      <Nav />
       {token || auth ? (
         <div className="mt-3">
           <div className="row">
             <div className="col-md-11">
               <h1>Lista de Participantes</h1>
-            </div>
-            <div className=" col-md-1">
-              <Logout />
             </div>
           </div>
           <div className="col-md-1"></div>
@@ -116,7 +114,7 @@ const Assistants = ({ auth }) => {
             <button
               type="button"
               onClick={() => setModal(true)}
-              className="btn btn-success"
+              className="btn btn-outline-success"
             >
               +
             </button>

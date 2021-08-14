@@ -111,7 +111,7 @@ const Login = ({ user, setUser, setAuth }) => {
             >
               Sign up
             </Link>
-            {redirect ? <Redirect to="/assistants" /> : null}
+            {redirect ? <Redirect to="/home" /> : null}
           </form>
         </div>
       </div>

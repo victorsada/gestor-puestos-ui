@@ -10,8 +10,8 @@ const Logout = () => {
   return (
     <Fragment>
       <div>
-        <button onClick={logout} className="btn-danger">
-          <i class="fa fa-sign-out"></i>
+        <button onClick={logout} className=" btn btn-outline-light btn-block">
+          <b> Cerrar Sesion</b>
         </button>
       </div>
       {redirect ? <Redirect to="/" /> : null}
