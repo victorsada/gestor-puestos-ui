@@ -8,7 +8,7 @@ const Nav = () => {
           Home
         </a>
 
-        <a className="  navbar-brand" href="#">
+        <a className="  navbar-brand" href="/meetings">
           <b>Reuniones</b>
         </a>
         <a className="margen-right navbar-brand" href="/assistants">

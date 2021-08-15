@@ -5,12 +5,11 @@ import assistantContext from "../../context/assistant/assistantContext";
 const EditAssistant = () => {
   const asistenteContext = useContext(assistantContext);
   const { asistente } = asistenteContext;
-  const { adress, email, telf, member } = asistente;
+  const { adress, email, telf } = asistente;
   const [redirect, setRedirect] = useState(false);
   const [direccion, setDireccion] = useState("");
   const [telefono, setTelefono] = useState("");
   const [correo, setCorreo] = useState("");
-  const [miembro, setMiembro] = useState();
   const cancel = () => {
     setRedirect(true);
   };
@@ -44,13 +43,12 @@ const EditAssistant = () => {
         body: JSON.stringify(datas),
       }
     );
-    const response = await data.json();
+    await data.json();
     setRedirect(true);
   };
-  const memberChange = (e) => {
-    setMiembro(!member);
-  };
-  console.log(miembro);
+  // const memberChange = (e) => {
+  //   setMiembro(!member);
+  // };
   return (
     <Fragment>
       <div className="container">
