@@ -121,7 +121,7 @@ const Assistants = ({ auth }) => {
           </div>
         </div>
       ) : (
-        <h1>No estas autorizado, ¡ve y logueate! :D</h1>
+        <h2 className="mt-5">No estas autorizado, ¡ve y logueate!</h2>
       )}
       <Modal isOpen={modal}>
         <ModalHeader>
