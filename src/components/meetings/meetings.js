@@ -29,6 +29,7 @@ const Meetings = () => {
       setMeetings(response.meeting);
     };
     getMeetings();
+    setRefresh(false);
   }, [refresh]);
 
   const handleChange = (e) => {
@@ -54,7 +55,6 @@ const Meetings = () => {
       body: JSON.stringify(reunion),
     });
     const response = await data.json();
-    console.log(response);
     setModal(false);
     setError(false);
     setRefresh(true);
@@ -82,14 +82,18 @@ const Meetings = () => {
               </tr>
             </thead>
             <tbody>
-              {meetings.length === 0 ? (
+              {!meetings ? (
                 <div className="mt-5 ">
                   <h1>Oops, no hay reuniones</h1>
                   <h2>¡Ve a crear una!</h2>
                 </div>
               ) : (
                 meetings.map((meeting) => (
-                  <Meeting key={meeting.id} meeting={meeting} />
+                  <Meeting
+                    key={meeting.id}
+                    meeting={meeting}
+                    setRefresh={setRefresh}
+                  />
                 ))
               )}
             </tbody>
