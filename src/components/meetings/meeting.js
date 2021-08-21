@@ -1,8 +1,10 @@
 import React, { Fragment, useState } from "react";
 import { Modal, ModalBody, ModalHeader, ModalFooter } from "reactstrap";
-const Meeting = ({ meeting }) => {
+const Meeting = ({ meeting, setRefresh }) => {
   const token = localStorage.getItem("token");
   const [modal, setModal] = useState(false);
+  const [del, setDel] = useState(false);
+
   const handleMore = async (id) => {
     setModal(true);
     await fetch(`http://localhost:4000/api/meeting/${id}`, {
@@ -12,6 +14,19 @@ const Meeting = ({ meeting }) => {
       },
     });
   };
+
+  const handleDelete = (e) => setDel(true);
+
+  const deleteMeeting = async (id) => {
+    await fetch(`http://localhost:4000/api/meeting/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: token,
+      },
+    });
+    setRefresh(true);
+  };
+
   return (
     <Fragment>
       <tr>
@@ -32,7 +47,7 @@ const Meeting = ({ meeting }) => {
           <button
             type="button"
             className="btn btn-outline-danger font-weight-bold "
-            // onClick={() => handleDelete()}
+            onClick={() => handleDelete()}
           >
             Eliminar
           </button>
@@ -80,6 +95,32 @@ const Meeting = ({ meeting }) => {
             type="button"
           >
             OK
+          </button>
+        </ModalFooter>
+      </Modal>
+      <Modal isOpen={del}>
+        <ModalHeader>Confirmacion</ModalHeader>
+        <ModalBody>
+          <p>
+            ¿Estas seguro que deseas eliminar a{" "}
+            <b className="text-capitalize">{meeting.name}</b>?{" "}
+          </p>
+        </ModalBody>
+        <ModalFooter>
+          <button
+            onClick={() => {
+              deleteMeeting(meeting.id);
+              setDel(false);
+            }}
+            className="btn btn-danger btn-block"
+          >
+            Si
+          </button>
+          <button
+            onClick={() => setDel(false)}
+            className="btn btn-primary btn-block"
+          >
+            No
           </button>
         </ModalFooter>
       </Modal>

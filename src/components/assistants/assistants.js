@@ -94,10 +94,10 @@ const Assistants = ({ auth }) => {
               </tr>
             </thead>
             <tbody>
-              {assistant.length === 0 ? (
+              {assistant.message ? (
                 <div className="mt-5 ">
-                  <h1>Ooops, no hay participantes :'C </h1>
-                  <h2>Ve a crear uno ^.^</h2>
+                  <h1>Ooops, no hay participantes </h1>
+                  <h2>Ve a crear uno!</h2>
                 </div>
               ) : (
                 assistant.map((participant) => (
