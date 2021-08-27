@@ -33,7 +33,7 @@ const EditAssistant = () => {
       datas.email = edited.email;
     }
     const data = await fetch(
-      `http://localhost:4000/api/assistant/${asistente._id}`,
+      `https://gestor-puestos.herokuapp.com/api/assistant/${asistente._id}`,
       {
         method: "PATCH",
         headers: {

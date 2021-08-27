@@ -19,12 +19,15 @@ const Meetings = () => {
 
   useEffect(() => {
     const getMeetings = async () => {
-      const meeting = await fetch("http://localhost:4000/api/meeting", {
-        method: "GET",
-        headers: {
-          Authorization: token,
-        },
-      });
+      const meeting = await fetch(
+        "https://gestor-puestos.herokuapp.com/api/meeting",
+        {
+          method: "GET",
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
       const response = await meeting.json();
       setMeetings(response.meeting);
     };
@@ -46,14 +49,17 @@ const Meetings = () => {
       return;
     }
 
-    const data = await fetch("http://localhost:4000/api/meeting", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-      body: JSON.stringify(reunion),
-    });
+    const data = await fetch(
+      "https://gestor-puestos.herokuapp.com/api/meeting",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+        body: JSON.stringify(reunion),
+      }
+    );
     const response = await data.json();
     setModal(false);
     setError(false);

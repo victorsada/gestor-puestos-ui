@@ -6,8 +6,8 @@ const CreateUser = ({ user, setUser }) => {
     if (user === undefined) {
       return;
     }
-    const url = "http://localhost:4000/api/user";
-
+    //const url = "http://localhost:4000/api/user";
+    const url = "https://gestor-puestos.herokuapp.com/api/user";
     const api = async () => {
       const createdUser = await fetch(url, {
         method: "POST",

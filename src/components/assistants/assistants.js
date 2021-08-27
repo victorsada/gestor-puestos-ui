@@ -23,7 +23,7 @@ const Assistants = ({ auth }) => {
 
   useEffect(() => {
     const getAssistants = async () => {
-      const url = "http://localhost:4000/api/assistant";
+      const url = "https://gestor-puestos.herokuapp.com/api/assistant";
       const response = await fetch(url, {
         method: "GET",
         headers: {
@@ -42,7 +42,7 @@ const Assistants = ({ auth }) => {
       setError(true);
       return;
     }
-    await fetch("http://localhost:4000/api/assistant", {
+    await fetch("https://gestor-puestos.herokuapp.com/api/assistant", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

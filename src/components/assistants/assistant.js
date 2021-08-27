@@ -14,7 +14,7 @@ const Assistant = ({ participant, setRefresh }) => {
 
   const handleMore = async (id) => {
     setModal(true);
-    await fetch(`http://localhost:4000/api/assistant/${id}`, {
+    await fetch(`https://gestor-puestos.herokuapp.com/api/assistant/${id}`, {
       method: "GET",
       headers: {
         Authorization: token,
@@ -23,7 +23,7 @@ const Assistant = ({ participant, setRefresh }) => {
   };
 
   const deleteAssistant = async (id) => {
-    await fetch(`http://localhost:4000/api/assistant/${id}`, {
+    await fetch(`https://gestor-puestos.herokuapp.com/api/assistant/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: token,

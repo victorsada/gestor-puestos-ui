@@ -7,7 +7,7 @@ const Meeting = ({ meeting, setRefresh }) => {
 
   const handleMore = async (id) => {
     setModal(true);
-    await fetch(`http://localhost:4000/api/meeting/${id}`, {
+    await fetch(`https://gestor-puestos.herokuapp.com/api/meeting/${id}`, {
       method: "GET",
       headers: {
         Authorization: token,
@@ -18,7 +18,7 @@ const Meeting = ({ meeting, setRefresh }) => {
   const handleDelete = (e) => setDel(true);
 
   const deleteMeeting = async (id) => {
-    await fetch(`http://localhost:4000/api/meeting/${id}`, {
+    await fetch(`https://gestor-puestos.herokuapp.com/api/meeting/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: token,

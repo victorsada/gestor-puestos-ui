@@ -8,7 +8,7 @@ const Login = ({ user, setUser, setAuth }) => {
     }
 
     const api = async () => {
-      const url = "http://localhost:4000/api/user/login";
+      const url = "https://gestor-puestos.herokuapp.com/api/user/login";
 
       try {
         const response = await fetch(url, {
