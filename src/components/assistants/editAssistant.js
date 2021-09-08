@@ -46,9 +46,7 @@ const EditAssistant = () => {
     await data.json();
     setRedirect(true);
   };
-  // const memberChange = (e) => {
-  //   setMiembro(!member);
-  // };
+
   return (
     <Fragment>
       <div className="container">

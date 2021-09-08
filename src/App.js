@@ -8,6 +8,7 @@ import EditAssistant from "./components/assistants/editAssistant";
 import AssistantState from "./context/assistant/assistantState";
 import Home from "./components/home";
 import Meetings from "./components/meetings/meetings";
+import EditMeeting from "./components/meetings/editMeeting";
 
 function App() {
   const [user, setUser] = useState();
@@ -31,6 +32,7 @@ function App() {
             </Route>
             <Route exact path="/home" component={Home} />
             <Route exact path="/meetings" component={Meetings} />
+            <Route exact path="/editmeeting" component={EditMeeting} />
           </Switch>
         </Router>
       </AssistantState>

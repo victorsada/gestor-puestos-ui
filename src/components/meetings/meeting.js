@@ -1,9 +1,12 @@
 import React, { Fragment, useState } from "react";
 import { Modal, ModalBody, ModalHeader, ModalFooter } from "reactstrap";
+import { Redirect } from "react-router-dom";
+
 const Meeting = ({ meeting, setRefresh }) => {
   const token = localStorage.getItem("token");
   const [modal, setModal] = useState(false);
   const [del, setDel] = useState(false);
+  const [edit, setEdit] = useState(false);
 
   const handleMore = async (id) => {
     setModal(true);
@@ -27,6 +30,11 @@ const Meeting = ({ meeting, setRefresh }) => {
     setRefresh(true);
   };
 
+  const handleEdit = () => {
+    setEdit(true);
+    // setAsistente(participant);
+  };
+
   return (
     <Fragment>
       <tr>
@@ -39,7 +47,7 @@ const Meeting = ({ meeting, setRefresh }) => {
         <td>{meeting.time}</td>
         <td className="acciones">
           <button
-            // onClick={handleEdit}
+            onClick={handleEdit}
             className="btn btn-outline-secondary m-1"
           >
             Editar
@@ -124,6 +132,10 @@ const Meeting = ({ meeting, setRefresh }) => {
           </button>
         </ModalFooter>
       </Modal>
+
+      {edit ? (
+        <Redirect to={{ pathname: "/editmeeting", state: meeting }} />
+      ) : null}
     </Fragment>
   );
 };
