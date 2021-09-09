@@ -10,6 +10,8 @@ const Meeting = ({ meeting, setRefresh }) => {
   const [assistants, setAssistants] = useState([]);
   const [delModal, setDelModal] = useState(false);
   const [deleteAssistant, setDeleteAssistant] = useState("");
+  const [agregarAsistente, setAgregarAsistente] = useState(false);
+  const [add, setAdd] = useState("");
 
   const handleMore = async (id) => {
     setModal(true);
@@ -62,6 +64,21 @@ const Meeting = ({ meeting, setRefresh }) => {
     alert(response.message);
     setDelModal(false);
   };
+
+  const addAssistant = async (id) => {
+    const data = {
+      assistants: add,
+    };
+    await fetch(`https://gestor-puestos.herokuapp.com/api/meeting/${id}`, {
+      method: "PATCH",
+      headers: {
+        Authorization: localStorage.getItem("token"),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    setAgregarAsistente(false);
+  };
   return (
     <Fragment>
       <tr>
@@ -95,7 +112,14 @@ const Meeting = ({ meeting, setRefresh }) => {
             Ver más
           </button>
           <button
-            className="btn btn-danger btn-block"
+            className="btn btn-primary btn-block"
+            type="button"
+            onClick={() => setAgregarAsistente(true)}
+          >
+            +
+          </button>
+          <button
+            className="btn btn-danger btn-block m-1"
             type="button"
             onClick={() => setDelModal(true)}
           >
@@ -168,7 +192,9 @@ const Meeting = ({ meeting, setRefresh }) => {
       </Modal>
 
       <Modal isOpen={delModal}>
-        <ModalHeader>Elimina un Asistente de la Reunion</ModalHeader>
+        <ModalHeader>
+          <h4> Elimina un Asistente de la Reunion </h4>
+        </ModalHeader>
         <ModalBody>
           <input
             type="text"
@@ -190,6 +216,43 @@ const Meeting = ({ meeting, setRefresh }) => {
           <button
             onClick={() => setDelModal(false)}
             className="btn btn-primary btn-block"
+          >
+            Cancelar
+          </button>
+        </ModalFooter>
+      </Modal>
+
+      <Modal isOpen={agregarAsistente}>
+        <ModalHeader>
+          <h4>Agrega asistentes a la reunion</h4>
+        </ModalHeader>
+        <ModalBody>
+          <label>
+            <b> Nombre de los asistentes: </b>
+            <i className="text-secondary font-weight-light">
+              (separados por comas ( , ) )
+            </i>
+          </label>
+          <input
+            type="text"
+            placeholder="Ej: Juan, Pedro, Jesus"
+            name={add}
+            onChange={(e) => setAdd(e.target.value)}
+            className="form-control mt-2 mb-5"
+          />
+        </ModalBody>
+        <ModalFooter>
+          <button
+            onClick={() => {
+              addAssistant(meeting.id);
+            }}
+            className="btn btn-success btn-block"
+          >
+            Agregar
+          </button>
+          <button
+            onClick={() => setAgregarAsistente(false)}
+            className="btn btn-danger btn-block"
           >
             Cancelar
           </button>
