@@ -10,6 +10,7 @@ const EditAssistant = () => {
   const [direccion, setDireccion] = useState("");
   const [telefono, setTelefono] = useState("");
   const [correo, setCorreo] = useState("");
+  const [error, setError] = useState(false);
   const cancel = () => {
     setRedirect(true);
   };
@@ -32,6 +33,11 @@ const EditAssistant = () => {
     if (edited.email) {
       datas.email = edited.email;
     }
+    if (!Object.keys(datas).length) {
+      setError(true);
+      return;
+    }
+    setError(false);
     const data = await fetch(
       `https://gestor-puestos.herokuapp.com/api/assistant/${asistente._id}`,
       {
@@ -43,7 +49,8 @@ const EditAssistant = () => {
         body: JSON.stringify(datas),
       }
     );
-    await data.json();
+    const response = await data.json();
+    alert(response.message);
     setRedirect(true);
   };
 
@@ -53,6 +60,11 @@ const EditAssistant = () => {
         <div className="mt-5 card p-5">
           <h4 className="mt-5">Editar Informacion del Asistente</h4>
           <form onSubmit={handleSubmit}>
+            {error ? (
+              <p className="bg-danger p-2 rounded text-light">
+                Debes actualizar al menos un campo
+              </p>
+            ) : null}
             <input
               type="text"
               className="form-control w-100 mt-2"

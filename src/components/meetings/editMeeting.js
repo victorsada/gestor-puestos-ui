@@ -11,6 +11,7 @@ const EditMeeting = (props) => {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [amountPeople, setAmountPeole] = useState(0);
+  const [error, setError] = useState(false);
 
   const cancel = () => {
     setRedirect(true);
@@ -39,7 +40,12 @@ const EditMeeting = (props) => {
     if (edited.amountPeople) {
       datas.amountPeople = edited.amountPeople;
     }
-    await fetch(
+    if (!Object.keys(datas).length) {
+      setError(true);
+      return;
+    }
+    setError(false);
+    const response = await fetch(
       `https://gestor-puestos.herokuapp.com/api/meeting/${meeting.id}`,
       {
         method: "PATCH",
@@ -50,6 +56,8 @@ const EditMeeting = (props) => {
         body: JSON.stringify(datas),
       }
     );
+    const respuesta = await response.json();
+    alert(respuesta.message);
     setRedirect(true);
   };
 
@@ -59,6 +67,11 @@ const EditMeeting = (props) => {
         <div className="mt-5 card p-5">
           <h4 className="mt-5">Editar Informacion de la Reunion</h4>
           <form onSubmit={handleSubmit}>
+            {error ? (
+              <p className="bg-danger text-light p-2 rounded">
+                Debes actualizar al menos un campo
+              </p>
+            ) : null}
             <input
               type="text"
               className="form-control w-100 mt-2"

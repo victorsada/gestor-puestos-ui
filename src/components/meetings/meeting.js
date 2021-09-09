@@ -12,6 +12,7 @@ const Meeting = ({ meeting, setRefresh }) => {
   const [deleteAssistant, setDeleteAssistant] = useState("");
   const [agregarAsistente, setAgregarAsistente] = useState(false);
   const [add, setAdd] = useState("");
+  const [error, setError] = useState(false);
 
   const handleMore = async (id) => {
     setModal(true);
@@ -66,17 +67,29 @@ const Meeting = ({ meeting, setRefresh }) => {
   };
 
   const addAssistant = async (id) => {
+    if (add.trim() === "") {
+      setError(true);
+      return;
+    }
+    setError(false);
+
     const data = {
       assistants: add,
     };
-    await fetch(`https://gestor-puestos.herokuapp.com/api/meeting/${id}`, {
-      method: "PATCH",
-      headers: {
-        Authorization: localStorage.getItem("token"),
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
+    const response = await fetch(
+      `https://gestor-puestos.herokuapp.com/api/meeting/${id}`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: localStorage.getItem("token"),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
+    const respuesta = await response.json();
+    alert(respuesta.message);
+    setAdd("");
     setAgregarAsistente(false);
   };
   return (
@@ -196,12 +209,15 @@ const Meeting = ({ meeting, setRefresh }) => {
           <h4> Elimina un Asistente de la Reunion </h4>
         </ModalHeader>
         <ModalBody>
+          <label>
+            <b> Nombre del asistente que sacar de la reunion: </b>{" "}
+          </label>
           <input
             type="text"
             placeholder="Escribe el nombre del asistente que quieres eliminar"
             onChange={(e) => setDeleteAssistant(e.target.value)}
             name={deleteAssistant}
-            className="form-control mt-5 mb-5"
+            className="form-control mt-2 mb-5"
           />
         </ModalBody>
         <ModalFooter>
@@ -227,6 +243,11 @@ const Meeting = ({ meeting, setRefresh }) => {
           <h4>Agrega asistentes a la reunion</h4>
         </ModalHeader>
         <ModalBody>
+          {error ? (
+            <p className="p-2 bg-danger mt-2 text-light rounded">
+              Debes colocar al menos un nombre de un asistente
+            </p>
+          ) : null}
           <label>
             <b> Nombre de los asistentes: </b>
             <i className="text-secondary font-weight-light">
