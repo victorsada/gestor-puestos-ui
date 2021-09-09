@@ -60,7 +60,7 @@ const Meetings = () => {
         body: JSON.stringify(reunion),
       }
     );
-    const response = await data.json();
+    await data.json();
     setModal(false);
     setError(false);
     setRefresh(true);

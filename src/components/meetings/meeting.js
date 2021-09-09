@@ -7,15 +7,21 @@ const Meeting = ({ meeting, setRefresh }) => {
   const [modal, setModal] = useState(false);
   const [del, setDel] = useState(false);
   const [edit, setEdit] = useState(false);
+  const [assistants, setAssistants] = useState([]);
 
   const handleMore = async (id) => {
     setModal(true);
-    await fetch(`https://gestor-puestos.herokuapp.com/api/meeting/${id}`, {
-      method: "GET",
-      headers: {
-        Authorization: token,
-      },
-    });
+    const data = await fetch(
+      `https://gestor-puestos.herokuapp.com/api/meeting/${id}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+    const response = await data.json();
+    setAssistants(response.assistants);
   };
 
   const handleDelete = (e) => setDel(true);
@@ -32,7 +38,6 @@ const Meeting = ({ meeting, setRefresh }) => {
 
   const handleEdit = () => {
     setEdit(true);
-    // setAsistente(participant);
   };
 
   return (
@@ -63,7 +68,7 @@ const Meeting = ({ meeting, setRefresh }) => {
           <button
             type="button"
             className="font-weight-bold btn btn-outline-info  m-1"
-            onClick={() => handleMore(meeting._id)}
+            onClick={() => handleMore(meeting.id)}
           >
             Ver más
           </button>
@@ -92,7 +97,7 @@ const Meeting = ({ meeting, setRefresh }) => {
             </li>
             <li className="text-capitalize">
               <b>Asistentes: </b>
-              {/**/}
+              <i>{assistants.map((item) => `${item.name}, `)}</i>
             </li>
           </ul>
         </ModalBody>

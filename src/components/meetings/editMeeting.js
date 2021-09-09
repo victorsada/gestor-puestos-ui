@@ -11,6 +11,7 @@ const EditMeeting = (props) => {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [amountPeople, setAmountPeole] = useState(0);
+  const [assistants, setAssistants] = useState("");
 
   const cancel = () => {
     setRedirect(true);
@@ -21,6 +22,7 @@ const EditMeeting = (props) => {
     date,
     time,
     amountPeople,
+    assistants,
   };
 
   const handleSubmit = async (e) => {
@@ -39,8 +41,10 @@ const EditMeeting = (props) => {
     if (edited.amountPeople) {
       datas.amountPeople = edited.amountPeople;
     }
-
-    const data = await fetch(
+    if (edited.assistants) {
+      datas.assistants = edited.assistants;
+    }
+    await fetch(
       `https://gestor-puestos.herokuapp.com/api/meeting/${meeting.id}`,
       {
         method: "PATCH",
@@ -51,7 +55,6 @@ const EditMeeting = (props) => {
         body: JSON.stringify(datas),
       }
     );
-    await data.json();
     setRedirect(true);
   };
 
@@ -61,6 +64,13 @@ const EditMeeting = (props) => {
         <div className="mt-5 card p-5">
           <h4 className="mt-5">Editar Informacion de la Reunion</h4>
           <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              className="form-control w-100 mt-2"
+              name={assistants}
+              placeholder="Coloca los asistentes separados por comas ( , ) que quieras agregar a la reunión..."
+              onChange={(e) => setAssistants(e.target.value)}
+            />
             <input
               type="text"
               className="form-control w-100 mt-2"
