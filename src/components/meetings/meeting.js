@@ -8,6 +8,8 @@ const Meeting = ({ meeting, setRefresh }) => {
   const [del, setDel] = useState(false);
   const [edit, setEdit] = useState(false);
   const [assistants, setAssistants] = useState([]);
+  const [delModal, setDelModal] = useState(false);
+  const [deleteAssistant, setDeleteAssistant] = useState("");
 
   const handleMore = async (id) => {
     setModal(true);
@@ -40,6 +42,26 @@ const Meeting = ({ meeting, setRefresh }) => {
     setEdit(true);
   };
 
+  const eliminarAsistente = async () => {
+    const data = {
+      name: deleteAssistant,
+      meeting: meeting.name,
+    };
+    const respuesta = await fetch(
+      `https://gestor-puestos.herokuapp.com/api/meeting/`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: localStorage.getItem("token"),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
+    const response = await respuesta.json();
+    alert(response.message);
+    setDelModal(false);
+  };
   return (
     <Fragment>
       <tr>
@@ -71,6 +93,13 @@ const Meeting = ({ meeting, setRefresh }) => {
             onClick={() => handleMore(meeting.id)}
           >
             Ver más
+          </button>
+          <button
+            className="btn btn-danger btn-block"
+            type="button"
+            onClick={() => setDelModal(true)}
+          >
+            -
           </button>
         </td>
       </tr>
@@ -134,6 +163,35 @@ const Meeting = ({ meeting, setRefresh }) => {
             className="btn btn-primary btn-block"
           >
             No
+          </button>
+        </ModalFooter>
+      </Modal>
+
+      <Modal isOpen={delModal}>
+        <ModalHeader>Elimina un Asistente de la Reunion</ModalHeader>
+        <ModalBody>
+          <input
+            type="text"
+            placeholder="Escribe el nombre del asistente que quieres eliminar"
+            onChange={(e) => setDeleteAssistant(e.target.value)}
+            name={deleteAssistant}
+            className="form-control mt-5 mb-5"
+          />
+        </ModalBody>
+        <ModalFooter>
+          <button
+            onClick={() => {
+              eliminarAsistente();
+            }}
+            className="btn btn-danger btn-block"
+          >
+            Eliminar
+          </button>
+          <button
+            onClick={() => setDelModal(false)}
+            className="btn btn-primary btn-block"
+          >
+            Cancelar
           </button>
         </ModalFooter>
       </Modal>
