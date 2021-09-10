@@ -1,17 +1,17 @@
-import React, { Fragment, useState } from "react";
-import { Modal, ModalBody, ModalHeader, ModalFooter } from "reactstrap";
-import { Redirect } from "react-router-dom";
+import React, { Fragment, useState } from 'react';
+import { Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap';
+import { Redirect } from 'react-router-dom';
 
 const Meeting = ({ meeting, setRefresh }) => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
   const [modal, setModal] = useState(false);
   const [del, setDel] = useState(false);
   const [edit, setEdit] = useState(false);
   const [assistants, setAssistants] = useState([]);
   const [delModal, setDelModal] = useState(false);
-  const [deleteAssistant, setDeleteAssistant] = useState("");
+  const [deleteAssistant, setDeleteAssistant] = useState('');
   const [agregarAsistente, setAgregarAsistente] = useState(false);
-  const [add, setAdd] = useState("");
+  const [add, setAdd] = useState('');
   const [error, setError] = useState(false);
 
   const handleMore = async (id) => {
@@ -19,7 +19,7 @@ const Meeting = ({ meeting, setRefresh }) => {
     const data = await fetch(
       `https://gestor-puestos.herokuapp.com/api/meeting/${id}`,
       {
-        method: "GET",
+        method: 'GET',
         headers: {
           Authorization: token,
         },
@@ -33,7 +33,7 @@ const Meeting = ({ meeting, setRefresh }) => {
 
   const deleteMeeting = async (id) => {
     await fetch(`https://gestor-puestos.herokuapp.com/api/meeting/${id}`, {
-      method: "DELETE",
+      method: 'DELETE',
       headers: {
         Authorization: token,
       },
@@ -53,10 +53,10 @@ const Meeting = ({ meeting, setRefresh }) => {
     const respuesta = await fetch(
       `https://gestor-puestos.herokuapp.com/api/meeting/`,
       {
-        method: "DELETE",
+        method: 'DELETE',
         headers: {
-          Authorization: localStorage.getItem("token"),
-          "Content-Type": "application/json",
+          Authorization: localStorage.getItem('token'),
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
       }
@@ -67,29 +67,30 @@ const Meeting = ({ meeting, setRefresh }) => {
   };
 
   const addAssistant = async (id) => {
-    if (add.trim() === "") {
+    if (add.trim() === '') {
       setError(true);
       return;
     }
     setError(false);
 
     const data = {
-      assistants: add,
+      meeting: meeting.name,
+      assistant: add,
     };
     const response = await fetch(
-      `https://gestor-puestos.herokuapp.com/api/meeting/${id}`,
+      `https://gestor-puestos.herokuapp.com/api/meeting/add`,
       {
-        method: "PATCH",
+        method: 'POST',
         headers: {
-          Authorization: localStorage.getItem("token"),
-          "Content-Type": "application/json",
+          Authorization: localStorage.getItem('token'),
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
       }
     );
     const respuesta = await response.json();
     alert(respuesta.message);
-    setAdd("");
+    setAdd('');
     setAgregarAsistente(false);
   };
   return (
@@ -159,7 +160,7 @@ const Meeting = ({ meeting, setRefresh }) => {
             </li>
             <li className="text-capitalize">
               <b>Cantidad Maxima de Personas: </b>
-              {meeting.amountPeople ? meeting.amountPeople : "no especifica"}
+              {meeting.amountPeople ? meeting.amountPeople : 'no especifica'}
             </li>
             <li className="text-capitalize">
               <b>Asistentes: </b>
@@ -181,8 +182,8 @@ const Meeting = ({ meeting, setRefresh }) => {
         <ModalHeader>Confirmacion</ModalHeader>
         <ModalBody>
           <p>
-            ¿Estas seguro que deseas eliminar a{" "}
-            <b className="text-capitalize">{meeting.name}</b>?{" "}
+            ¿Estas seguro que deseas eliminar a{' '}
+            <b className="text-capitalize">{meeting.name}</b>?{' '}
           </p>
         </ModalBody>
         <ModalFooter>
@@ -210,7 +211,7 @@ const Meeting = ({ meeting, setRefresh }) => {
         </ModalHeader>
         <ModalBody>
           <label>
-            <b> Nombre del asistente que sacar de la reunion: </b>{" "}
+            <b> Nombre del asistente que sacar de la reunion: </b>{' '}
           </label>
           <input
             type="text"
@@ -281,7 +282,7 @@ const Meeting = ({ meeting, setRefresh }) => {
       </Modal>
 
       {edit ? (
-        <Redirect to={{ pathname: "/editmeeting", state: meeting }} />
+        <Redirect to={{ pathname: '/editmeeting', state: meeting }} />
       ) : null}
     </Fragment>
   );
